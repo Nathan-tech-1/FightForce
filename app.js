@@ -32,13 +32,11 @@ function preload() {
     this.load.image('ff','./image/ff.png');
     this.load.image('glass-panel','./assets/png/glassPanel.png');
     this.load.image('cursor-hand','./assets/png/cursor_hand.png');
-
 };
 
 function create() {
     this.add.image(500, 300, 'new');
     this.add.image(700,300, 'ff');
-    this.input.on('pointerdown', () => this.scene.start('game'))
     const { width, height } = this.scale
     
         // Play button
