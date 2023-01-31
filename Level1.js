@@ -1,21 +1,18 @@
-import { Scene } from 'Phaser'
+var level1Scene = new Phaser.Scene('level1');
 
-class level1 extends Scene {
-    constructor() {
-        super('preload')
+function preload() {
+    this.load.image('forest1','./map/map1.png');
+    this.load.image('forest2','./image/map2.png');
+    this.load.image('forest3','./image/map3.png');
+    this.load.image('Perso','./chara/principal.png');
+    this.load.image('mob1','./chara/ennemi1.png');
+    this.load.image('mob2','./chara/ennemi2.png');
+    this.load.image('mob3','./chara/ennemi3.png');
+    this.load.image('cursor-hand','./assets/png/cursor_hand.png');
+};
 
-    }
-
-    preload() {
-        this.load.image('new','./image/new.png');
-        this.load.image('ff','./image/ff.png');
-        this.load.image('glass-panel','./assets/png/glassPanel.png');
-    }
-
-    create() {
-        this.add.image(500, 300, 'new');
-        this.add.image(700,300, 'ff');
-        const { width, height } = this.scale
-        this.input.on('pointerdown', () => this.scene.start('level1') )
-    }  
+function create() {
+    this.add.image(500, 300, 'forest1');
+    this.add.image(150,200,'Perso');
+    this.add.image(400,200,'mob1');
 }

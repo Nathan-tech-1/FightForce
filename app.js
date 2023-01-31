@@ -11,21 +11,17 @@ const config = {
     scene:{
         preload: preload,
         create: create,
+        update: update,
+        selectButton: selectNextButton,
+        selectNextButton: selectNextButton,
+        confirmSelection: confirmSelection,
+
     }
 }
 
 // Initialisation du jeu
 var game = new Phaser.Game(config);
-var MainMenuScene = new Phaser.Scene('main-menu');
-
-MainMenuScene.init = function () {
-this.cursors = this.input.keyboard.createCursorKeys();
-this.buttonSelector = this.add.image(
-    this.buttons[this.selectedButtonIndex].x - this.buttons[this.selectedButtonIndex].displayWidth * 0.5 - 20,
-    this.buttons[this.selectedButtonIndex].y,
-    'cursor-hand'
-  ).setDisplaySize(32, 32).setAlpha(0.7);
-};
+var appScene = new Phaser.Scene('menu');
 
 function preload() {
     this.load.image('new','./image/new.png');
@@ -37,6 +33,7 @@ function preload() {
 function create() {
     this.add.image(500, 300, 'new');
     this.add.image(700,300, 'ff');
+
     const { width, height } = this.scale
     
         // Play button
@@ -46,26 +43,10 @@ function create() {
     this.add.text(playButton.x, playButton.y, 'Play')
         .setOrigin(0.5)
     
-        // Settings button
-    const settingsButton = this.add.image(playButton.x, playButton.y + playButton.displayHeight + 10, 'glass-panel')
-        .setDisplaySize(150, 50)
-    
-    this.add.text(settingsButton.x, settingsButton.y, 'Settings')
-        .setOrigin(0.5)
-    
-        // Credits button
-    const creditsButton = this.add.image(settingsButton.x, settingsButton.y + settingsButton.displayHeight + 10, 'glass-panel')
-        .setDisplaySize(150, 50)
-    
-    this.add.text(creditsButton.x, creditsButton.y, 'Credits')
-        .setOrigin(0.5)
-    
-    this.buttonSelector = this.add.image(0, 0, 'cursor-hand')
+    this.buttonSelector = this.add.image(800, 500, 'cursor-hand')
 
     var buttons = [];
     buttons.push(playButton);
-    buttons.push(settingsButton);
-    buttons.push(creditsButton);
     this.buttons = buttons;
     
     function selectButton(index) {
@@ -86,21 +67,9 @@ function create() {
 	// store the new selected index
 	this.selectedButtonIndex = index
     this.selectButton(0)
-
-    playButton.on('pointerup', () => {
-        console.log('play');
-    });
-    
-    settingsButton.on('pointerup', () => {
-        console.log('settings');
-    });
-    
-    creditsButton.on('pointerup', () => {
-        console.log('credits');
-    });
-    
-        };
-    }
+    this.input.on('pointerdown', () => this.scene.start('level1'))   
+}
+}
 
     function selectNextButton(change) {
         change = change || 1;
@@ -115,39 +84,33 @@ function create() {
             index =
         this.buttons.length - 1;
     }
-
-this.selectButton(index);
+    
+    this.selectButton(index);
 
         
     }
 
     function confirmSelection() {
-        // Code ici
+        // Code here
         };
-        
 
 function update() {
-    const upJustPressed = this.input.keyboard.justDown(Phaser.Keyboard.UP);
-    const downJustPressed = this.input.keyboard.justDown(Phaser.Keyboard.DOWN);
-    const spaceJustPressed = this.input.keyboard.justDown(Phaser.Keyboard.SPACE);
-    
-    if (upJustPressed)
-    {
-        this.selectNextButton(-1)
-    }
-    else if (downJustPressed)
-    {
-        this.selectNextButton(1)
-    }
-    else if (spaceJustPressed)
-    {
-        this.confirmSelection()
-        // get the currently selected button
-	const button = this.buttons[this.selectedButtonIndex]
-
-	// emit the 'selected' event
-	button.emit('selected')
-    }
+    const upJustPressed = Phaser.Input.Keyboard.JustDown
+		const downJustPressed = Phaser.Input.Keyboard.JustDown
+		const spaceJustPressed = Phaser.Input.Keyboard.JustDown
+		
+		if (upJustPressed)
+		{
+			this.selectNextButton(-1)
+		}
+		else if (downJustPressed)
+		{
+			this.selectNextButton(1)
+		}
+		else if (spaceJustPressed)
+		{
+			this.confirmSelection()
+		}
 }
 
 
