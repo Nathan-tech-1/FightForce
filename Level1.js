@@ -2,15 +2,16 @@ scene:{
     preload: preload;
     create: create;
     update: update;
+    gameLoop: gameLoop;
+    displayPlayer: displayPlayer;
+    displayEnemy: displayEnemy;
 }
-
-var game = new Phaser.Game(config);
 var level1Scene = new Phaser.Scene('level1');
 
 function preload() {
     this.load.image('forest1','./map/map1.png');
     this.load.image('Perso','./chara/principal.png');
-    this.load.image('mob1','./chars/ennemi1.png');
+    this.load.image('mob1','./chara/ennemi1.png');
     this.load.image('cursor-hand','./assets/png/cursor_hand.png');
 };
 
@@ -18,6 +19,13 @@ function create() {
     this.add.image(500, 300,'forest1');
     this.add.image(150,200,'Perso');
     this.add.image(400,200,'mob1');
+
+    this.cameras.main.fadeIn(1000, 0, 0, 0)
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+		this.time.delayedCall(1000, () => {
+			this.scene.start('phaser-logo')
+		})
+	})
 }
 
 function update() {
@@ -44,6 +52,7 @@ var player = {
     },
 ]
 
+// Logique du jeu : passage au niveau suivant sous condition
 function gameLoop() {
     if (ennemy.pv <= 0) {
         console.log("Vous passez au niveau suivant");
@@ -70,6 +79,7 @@ function displayPlayer() {
     }
   }
 
+//loop
 function gameLoop() {
     if (ennemy >= ennemy.length) {
         level++;
@@ -97,3 +107,6 @@ function gameLoop() {
             console.log("Le sorcier est mort!");
         }
     }
+
+
+var scoreText;
